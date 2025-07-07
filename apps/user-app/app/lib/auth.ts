@@ -2,6 +2,7 @@ import db from "@repo/db/client";
 import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcrypt";
 import { SigninValidator } from "../../../../packages/zod/dist";
+import { NextAuthOptions } from "next-auth";
 
 interface CredentialsSchema {
   username: string;
@@ -9,7 +10,7 @@ interface CredentialsSchema {
   password: string;
 }
 
-export const authOptions = {
+export const authOptions:NextAuthOptions = {
   providers: [
     CredentialsProvider({
       name: 'Credentials',
@@ -19,14 +20,17 @@ export const authOptions = {
         password: { label: "Password", type: "password", required: true }
       },
       async authorize(credentials: Record<"username" | "phone" | "password", string> | undefined) {
+
         console.log("Received credentials:", credentials);
+
         const parsed = SigninValidator.safeParse({
             username:credentials?.username,
             phone:credentials?.phone,
             password:credentials?.password
         });
+
         if (!parsed.success) {
-          console.error("Validation failed:", parsed.error.flatten());
+          console.error("Validation failed:", parsed.error.flatten().fieldErrors);
           return null;
         }
 
@@ -60,6 +64,14 @@ export const authOptions = {
               password: hashedPassword
             }
           });
+
+          // const Balance = await db.balance.create({
+          //   data:{
+          //     userId:user.id,
+          //     amount:0,
+          //     locked:0
+          //   }
+          // })
 
           return {
             id: user.id.toString(),

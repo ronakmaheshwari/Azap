@@ -12,6 +12,7 @@
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {
+    "@repo/db":"*",
     "@repo/zod":"*",
     "@types/dotenv": "^6.1.1",
     "@types/express": "^5.0.3",
