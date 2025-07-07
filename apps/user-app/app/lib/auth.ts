@@ -4,10 +4,22 @@ import bcrypt from "bcrypt";
 import { SigninValidator } from "../../../../packages/zod/dist";
 import { NextAuthOptions } from "next-auth";
 
-interface CredentialsSchema {
-  username: string;
-  phone: string;
-  password: string;
+declare module "next-auth" {
+  interface Session {
+    user: {
+      id: string;
+      name?: string | null;
+      email?: string | null;
+      image?: string | null;
+    };
+  }
+
+  interface User {
+    id: string;
+    name?: string | null;
+    email?: string | null;
+    image?: string | null;
+  }
 }
 
 export const authOptions:NextAuthOptions = {
@@ -19,14 +31,17 @@ export const authOptions:NextAuthOptions = {
         phone: { label: "Phone number", type: "text", placeholder: "9545293105", required: true },
         password: { label: "Password", type: "password", required: true }
       },
-      async authorize(credentials: Record<"username" | "phone" | "password", string> | undefined) {
+      async authorize(
+        credentials: Record<"username" | "phone" | "password", string> | undefined,
+        req: any
+      ): Promise<{ id: string; name: string | null | undefined; number: string | null | undefined } | null> {
 
         console.log("Received credentials:", credentials);
 
         const parsed = SigninValidator.safeParse({
-            username:credentials?.username,
-            phone:credentials?.phone,
-            password:credentials?.password
+          username: credentials?.username,
+          phone: credentials?.phone,
+          password: credentials?.password
         });
 
         if (!parsed.success) {
@@ -41,20 +56,31 @@ export const authOptions:NextAuthOptions = {
         });
 
         if (existingUser) {
-          const passwordValid = await bcrypt.compare(password, existingUser.password);
-          if (passwordValid) {
-            return {
-              id: existingUser.id.toString(),
-              name: existingUser.name,
-              number: existingUser.number
-            };
+          if (
+            typeof password === "string" &&
+            typeof existingUser.password === "string"
+          ) {
+            const passwordValid = await bcrypt.compare(password, existingUser.password);
+            if (passwordValid) {
+              return {
+                id: existingUser.id?.toString() ?? "",
+                name: typeof existingUser.name === "string" ? existingUser.name : existingUser.name?.toString() ?? null,
+                number: typeof existingUser.number === "string" ? existingUser.number : existingUser.number?.toString() ?? null
+              };
+            } else {
+              console.warn("Incorrect password for user:", phone);
+              return null;
+            }
           } else {
-            console.warn("Incorrect password for user:", phone);
+            console.warn("Password or stored password is not a string");
             return null;
           }
         }
 
         try {
+          if (typeof password !== "string") {
+            throw new Error("Password must be a string");
+          }
           const hashedPassword = await bcrypt.hash(password, 10);
 
           const user = await db.user.create({
@@ -65,18 +91,10 @@ export const authOptions:NextAuthOptions = {
             }
           });
 
-          // const Balance = await db.balance.create({
-          //   data:{
-          //     userId:user.id,
-          //     amount:0,
-          //     locked:0
-          //   }
-          // })
-
           return {
-            id: user.id.toString(),
-            name: user.name,
-            number: user.number
+            id: user.id?.toString() ?? "",
+            name: typeof user.name === "string" ? user.name : user.name?.toString() ?? null,
+            number: typeof user.number === "string" ? user.number : user.number?.toString() ?? null
           };
         } catch (e) {
           console.error("User creation failed:", e);
