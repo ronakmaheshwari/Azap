@@ -18,7 +18,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Providers>
           <div className="min-h-screen min-w-screen flex flex-col">
             <AppbarClient />
-            <div className="flex flex-1">{children}</div>
+            <div className="flex">{children}</div>
           </div>
         </Providers>
       </body>

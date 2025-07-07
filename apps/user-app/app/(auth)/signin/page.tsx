@@ -5,44 +5,46 @@ import { useRouter } from "next/navigation"
 import { useState } from "react"
 
 export default function Signin() {
-    const router = useRouter();
+  const router = useRouter()
   const [username, setUsername] = useState("")
   const [phone, setPhone] = useState("")
   const [password, setPassword] = useState("")
-  const handleSignin = async()=>{
+
+  const handleSignin = async () => {
     try {
-        const result = await signIn("credentials",{
-            redirect:true,
-            callbackUrl: "/",
-            username,
-            phone,
-            password
-        })
-        if(result?.error){
-            console.error("Login failed:", result.error)
-        }else{
-            router.push("/");
-        }
+      const result = await signIn("credentials", {
+        redirect: true,
+        callbackUrl: "/dashboard",
+        username,
+        phone,
+        password,
+      })
+
+      if (result?.error) {
+        console.error("Login failed:", result.error)
+      } else {
+        router.push("/dashboard")
+      }
     } catch (error) {
-        console.error("Error at HandleFunction")
+      console.error("Error at HandleFunction", error)
     }
   }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
-      <div className="flex w-full max-w-4xl bg-white rounded-2xl shadow-lg overflow-hidden">
-    
-        <div className="w-1/2 hidden md:flex flex-col items-center justify-center bg-neutral-900 text-white px-6 py-8 gap-3">
-            <h1 className="text-2xl font-bold leading-snug text-center">
-                Welcome Back 👋 <br /> to Paylane
-            </h1>
-            <p className="text-md font-light text-gray-300 italic text-center">
-                Your trusted path to payments
-            </p>
+      <div className="flex w-full max-w-4xl rounded-2xl shadow-lg overflow-hidden bg-white">
+        <div className="hidden md:flex w-1/2 flex-col items-center justify-center bg-neutral-900 text-white px-8 py-10">
+          <h1 className="text-3xl font-bold text-center mb-4">
+            Welcome Back 👋 <br /> to Paylane
+          </h1>
+          <p className="text-md text-gray-300 italic text-center">
+            Your trusted path to payments
+          </p>
         </div>
-
-        <div className="w-full md:w-1/2 p-8 md:p-12 flex flex-col justify-center">
-          <h2 className="text-2xl font-semibold text-gray-800 mb-6">Sign In to your account</h2>
+        <div className="w-full md:w-1/2 p-8 md:p-12">
+          <h2 className="text-2xl font-semibold text-gray-800 mb-6">
+            Sign in to your account
+          </h2>
 
           <div className="space-y-4">
             <input
@@ -71,7 +73,10 @@ export default function Signin() {
             />
           </div>
 
-          <button className="mt-6 w-full py-2 bg-gray-900 hover:bg-gray-800 text-white font-medium rounded-md transition" onClick={()=>{handleSignin()}}>
+          <button
+            className="mt-6 w-full py-2 bg-gray-900 hover:bg-gray-800 text-white font-medium rounded-md transition-colors"
+            onClick={handleSignin}
+          >
             Sign In
           </button>
         </div>

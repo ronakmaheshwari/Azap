@@ -23,16 +23,14 @@ export default function Layout({
   children: React.ReactNode;
 }): JSX.Element {
   return (
-    <div className="flex min-h-screen w-full overflow-hidden">
-      {/* Sidebar */}
+    <div className="flex min-h-screen w-full overflow-hidden ">
       <div className="w-72 border-r border-slate-300 min-h-screen pt-28">
         <SidebarItem title="Home" icon={<HomeIcon />} href="/dashboard" />
         <SidebarItem title="Transfer" icon={<TransferIcon />} href="/transfer" />
         <SidebarItem title="Transaction" icon={<TransactionsIcon />} href="/transaction" />
       </div>
 
-      {/* Content */}
-      <div className="w-full overflow-hidden px-6 py-10">
+      <div className="w-full h-full overflow-hidden p-4">
         {children}
       </div>
     </div>
