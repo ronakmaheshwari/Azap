@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev":"tsc -b && node dist/index.js",
+    "dev": "tsc -b && node dist/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -12,11 +12,13 @@
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {
-    "@repo/db":"*",
-    "@repo/zod":"*",
+    "@repo/db": "*",
+    "@repo/zod": "*",
+    "@types/cors": "^2.8.19",
     "@types/dotenv": "^6.1.1",
     "@types/express": "^5.0.3",
     "@types/morgan": "^1.9.10",
+    "cors": "^2.8.5",
     "dotenv": "^16.0.3",
     "esbuild": "^0.25.5",
     "express": "^5.1.0",

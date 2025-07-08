@@ -2,14 +2,14 @@ import { useEffect, useState } from "react";
 import { useParams, useSearchParams } from "react-router-dom";
 import axios from "axios";
 
-type ProviderType = "HDFC" | "YesBank" | "AxisBank" | "ICIC" | "BOB" | "UPI";
+type ProviderType = "HDFC" | "YESBANK" | "AXISBANK" | "ICIC" | "BOB" | "UPI";
 
 const providerWebhookMap: Record<ProviderType, string> = {
-  HDFC: "https://webhook.site/hdfc",
-  YesBank: "https://webhook.site/yesbank",
-  AxisBank: "https://webhook.site/axisbank",
-  ICIC: "https://webhook.site/icici",
-  BOB: "https://webhook.site/bob",
+  HDFC: "http://localhost:3002/hdfc",
+  YESBANK: "http://localhost:3002/yesbank",
+  AXISBANK: "http://localhost:3002/axisbank",
+  ICIC: "http://localhost:3002/icici",
+  BOB: "http://localhost:3002/bob",
   UPI: "https://webhook.site/upi",
 };
 
@@ -43,14 +43,20 @@ export default function Bank() {
     setStatus("sending");
 
     try {
-      await axios.post(webhookURL, {
-        provider: providerKey,
-        amount,
-        token,
+      const response = await axios.post(webhookURL, {
+        // provider: providerKey,
+        // amount,
+        token
         // timestamp: new Date().toISOString(),
       });
-
       setStatus("success");
+
+      if(response.status == 200){
+        setTimeout(()=>{
+          window.close();
+        },5000)
+      }
+
     } catch (error) {
       console.error("Webhook error:", error);
       setStatus("error");
