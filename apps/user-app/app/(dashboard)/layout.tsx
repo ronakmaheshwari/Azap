@@ -18,6 +18,12 @@ function TransactionsIcon() {
   </svg>
 }
 
+function P2PTransactionIcon(){
+  return <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-6 h-6">
+    <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 19.5 15-15m0 0H8.25m11.25 0v11.25" />
+  </svg>
+}
+
 export default function Layout({
   children,
 }: {
@@ -32,6 +38,7 @@ export default function Layout({
             <SidebarItem title="Home" icon={<HomeIcon />} href="/dashboard" />
             <SidebarItem title="Transfer" icon={<TransferIcon />} href="/transfer" />
             <SidebarItem title="Transaction" icon={<TransactionsIcon />} href="/transaction" />
+            <SidebarItem title="P2P" icon={<P2PTransactionIcon/>} href="/p2p" />
           </div>
 
           <div className="w-full min-h-screen overflow-hidden p-4">

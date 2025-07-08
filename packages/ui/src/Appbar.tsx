@@ -1,4 +1,4 @@
-import { Wallet } from "lucide-react";
+import { Banknote } from "lucide-react";
 import { Button } from "./button";
 
 interface AppbarProps {
@@ -15,14 +15,22 @@ export const Appbar = ({
   onSignout,
 }: AppbarProps) => {
   return (
-    <div className="flex justify-between items-center border-b p-2 gap-4">
-      <div className="flex items-center gap-2 font-mono text-xl font-bold">
-        <Wallet className="w-5 h-8" />
-        <h2>Paylane</h2>
+    <header className="flex justify-between items-center border-b bg-white shadow-sm p-3">
+      <div className="flex items-center gap-2 text-primary font-semibold text-xl tracking-wide">
+        <Banknote className="w-7 h-10 text-purple-500" /> 
+        <span>Paylane</span>
       </div>
-      <Button onClick={user ? onSignout : onSignin}>
-        {user ? "Logout" : "Login"}
-      </Button>
-    </div>
+
+      <div className="flex items-center justify-center gap-5 text-sm sm:text-base">
+        {user?.name && (
+          <span className="text-gray-600">Welcome, {user.name}!</span>
+        )}
+        <Button
+          onClick={user ? onSignout : onSignin}
+        >
+          {user ? "Logout" : "Login"}
+        </Button>
+      </div>
+    </header>
   );
 };
