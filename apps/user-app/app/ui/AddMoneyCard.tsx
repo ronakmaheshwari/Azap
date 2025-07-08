@@ -37,6 +37,11 @@ export const Supported_Bank: BankSchema[] = [
     provider: "ICIC",
     redirectUrl: "https://infinity.icicibank.com/",
   },
+  {
+    name: "Baroda Bank",
+    provider: "BOB",
+    redirectUrl: "https://infinity.icicibank.com/",
+  },
 ];
 
 export default function AddMoneyCard() {
@@ -80,9 +85,21 @@ export default function AddMoneyCard() {
           <Button
             onClick={async() => {
               if (provider) {
-                await CreateOnRampTransaction(provider, (Number(amount)*100));
-                window.location.href = redirectUrl || ""
-                // window.open(redirectUrl);
+                const response = await CreateOnRampTransaction(provider,(Number(amount)*100));        //Actual Way to do it Real Bank API
+                
+                if (response.redirectUrl) {
+                  const popup = window.open(response.redirectUrl,"_blank","width=800,height=600,left=500,top=200")
+                  if (popup) {
+                    popup.focus();
+                  } else {
+                    alert("Please allow popups in your browser.");
+                  }
+                  
+                //  window.location.href = response.redirectUrl;
+                }
+                
+                // await CreateOnRampTransaction(provider, (Number(amount)*100));
+                // window.location.href = redirectUrl || ""  // window.open(redirectUrl);
               } else {
                 alert("Please select a valid bank provider.");
               }
