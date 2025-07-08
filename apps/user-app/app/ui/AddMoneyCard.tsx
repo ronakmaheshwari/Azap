@@ -9,6 +9,7 @@ import { useState } from "react";
 import CreateOnRampTransaction from "../lib/action/createOnrampTransaction";
 
 interface BankSchema {
+  key:number,
   name:string,
   provider: ProviderType,
   redirectUrl:string
@@ -18,26 +19,31 @@ type ProviderType = "HDFC" | "YesBank" | "AxisBank" | "ICIC" | "BOB" | "UPI";
 
 export const Supported_Bank: BankSchema[] = [
   {
+    key:0,
     name: "HDFC Bank",
     provider: "HDFC",
     redirectUrl: "https://netbanking.hdfcbank.com",
   },
   {
+    key:1,
     name: "Yes Bank",
     provider: "YesBank",
     redirectUrl: "https://www.yesbank.in/digital-banking",
   },
   {
+    key:2,
     name: "Axis Bank",
     provider: "AxisBank",
     redirectUrl: "https://www.axisbank.com/",
   },
   {
+    key:3,
     name: "ICIC Bank",
     provider: "ICIC",
     redirectUrl: "https://infinity.icicibank.com/",
   },
   {
+    key:4,
     name: "Baroda Bank",
     provider: "BOB",
     redirectUrl: "https://infinity.icicibank.com/",
@@ -73,9 +79,9 @@ export default function AddMoneyCard() {
               //   Supported_Bank.find((x) => x.name === value)?.redirectUrl || ""
               // );
             }}
-            options={Supported_Bank.map((x,index) => ({
+            options={Supported_Bank.map((x) => ({
               // key: x.name,
-              key:index,
+              key:x.key,
               value: x.name,
             }))}
           />
@@ -89,7 +95,7 @@ export default function AddMoneyCard() {
                 
                 if (response.redirectUrl) {
                   const popup = window.open(response.redirectUrl,"_blank","width=800,height=600,left=500,top=200")
-                  if (popup) {
+                  if (popup && !popup.closed) {
                     popup.focus();
                   } else {
                     alert("Please allow popups in your browser.");

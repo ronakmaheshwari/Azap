@@ -103,5 +103,5 @@ app.post("/icic",async(req:any,res:any)=>{
 })
 
 app.listen(port,()=>{
-    console.log(`Bank WebHook port running on ${port}`)
+    console.log(`Bank WebHook port running on http://localhost:${port}/`)
 })
