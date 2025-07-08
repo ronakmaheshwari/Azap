@@ -6,36 +6,43 @@ import MainCard from "@repo/ui/maincard";
 import Select from "@repo/ui/select";
 import TextInput from "@repo/ui/textinput";
 import { useState } from "react";
+import CreateOnRampTransaction from "../lib/action/createOnrampTransaction";
 
 interface BankSchema {
   name:string,
+  provider: ProviderType,
   redirectUrl:string
 }
 
-export const Supported_Bank:BankSchema[] = [
+type ProviderType = "HDFC" | "YesBank" | "AxisBank" | "ICIC" | "BOB" | "UPI";
+
+export const Supported_Bank: BankSchema[] = [
   {
     name: "HDFC Bank",
+    provider: "HDFC",
     redirectUrl: "https://netbanking.hdfcbank.com",
   },
   {
     name: "Yes Bank",
+    provider: "YesBank",
     redirectUrl: "https://www.yesbank.in/digital-banking",
   },
   {
     name: "Axis Bank",
+    provider: "AxisBank",
     redirectUrl: "https://www.axisbank.com/",
   },
   {
     name: "ICIC Bank",
+    provider: "ICIC",
     redirectUrl: "https://infinity.icicibank.com/",
   },
 ];
 
 export default function AddMoneyCard() {
   const [amount, setAmount] = useState<string>("");
-  const [redirectUrl, setRedirectUrl] = useState(
-    Supported_Bank[0]?.redirectUrl
-  );
+  const [provider,setProvider] = useState(Supported_Bank[0]?.provider);
+  const [redirectUrl, setRedirectUrl] = useState(Supported_Bank[0]?.redirectUrl);
 
   return (
     <MainCard title="Add Money">
@@ -55,6 +62,8 @@ export default function AddMoneyCard() {
               const index = Number(value);
               const result = Supported_Bank[index]
               setRedirectUrl(result?.redirectUrl);
+              setProvider(result?.provider);
+
               // setRedirectUrl(
               //   Supported_Bank.find((x) => x.name === value)?.redirectUrl || ""
               // );
@@ -69,8 +78,14 @@ export default function AddMoneyCard() {
 
         <div className="flex justify-center pt-4">
           <Button
-            onClick={() => {
-              window.location.href = redirectUrl || "";
+            onClick={async() => {
+              if (provider) {
+                await CreateOnRampTransaction(provider, (Number(amount)*100));
+                window.location.href = redirectUrl || ""
+                // window.open(redirectUrl);
+              } else {
+                alert("Please select a valid bank provider.");
+              }
             }}
           >
             Add Money
