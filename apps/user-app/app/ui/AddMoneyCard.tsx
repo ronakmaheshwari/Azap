@@ -7,7 +7,12 @@ import Select from "@repo/ui/select";
 import TextInput from "@repo/ui/textinput";
 import { useState } from "react";
 
-export const Supported_Bank = [
+interface BankSchema {
+  name:string,
+  redirectUrl:string
+}
+
+export const Supported_Bank:BankSchema[] = [
   {
     name: "HDFC Bank",
     redirectUrl: "https://netbanking.hdfcbank.com",
@@ -47,12 +52,16 @@ export default function AddMoneyCard() {
           </label>
           <Select
             onSelect={(value) => {
-              setRedirectUrl(
-                Supported_Bank.find((x) => x.name === value)?.redirectUrl || ""
-              );
+              const index = Number(value);
+              const result = Supported_Bank[index]
+              setRedirectUrl(result?.redirectUrl);
+              // setRedirectUrl(
+              //   Supported_Bank.find((x) => x.name === value)?.redirectUrl || ""
+              // );
             }}
-            options={Supported_Bank.map((x) => ({
-              key: x.name,
+            options={Supported_Bank.map((x,index) => ({
+              // key: x.name,
+              key:index,
               value: x.name,
             }))}
           />

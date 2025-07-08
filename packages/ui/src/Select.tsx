@@ -1,9 +1,9 @@
 "use client"
 export default function Select({options,onSelect}:{options:{
-        key:string,
+        key:string | number,
         value:string
     }[],
-    onSelect:(value: string) => void
+    onSelect:(value: string | number) => void
 }){
     return(
         <div>
