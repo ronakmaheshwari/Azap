@@ -30,28 +30,29 @@ export default async function() {
                 <div className="w-[50%]">
                   <SendCard />
                 </div>
-                <div className="flex flex-col gap-4 border p-6 rounded-lg shadow-sm bg-white w-[50%] max-h-[400px] overflow-y-scroll scrollbar-thin scrollbar-thumb-purple-400 scrollbar-track-purple-100 ">
+                <div className="flex flex-col gap-4 border p-6 rounded-lg shadow-sm bg-white w-[50%] ">
                   <h2 className="text-xl font-semibold text-gray-800">Your Transactions</h2>
+                  <div className="flex flex-col gap-3 max-h-[400px] overflow-y-scroll scrollbar-thin scrollbar-thumb-purple-400 scrollbar-track-purple-100">
+                    {sentTxns.map((txn) => (
+                      <TransactionCard
+                        key={typeof txn.id === "number" ? txn.id : 0}
+                        name={typeof txn.receiver.name === "string" ? txn.receiver.name : String(txn.receiver.name) || "Unknown"}
+                        amount={typeof txn.amount === "number" ? txn.amount/100 : 0}
+                        time={txn.startTime instanceof Date ? txn.startTime : new Date()}
+                        isSent={true}
+                      />
+                    ))}
 
-                  {sentTxns.map((txn) => (
-                    <TransactionCard
-                      key={typeof txn.id === "number" ? txn.id : 0}
-                      name={typeof txn.receiver.name === "string" ? txn.receiver.name : String(txn.receiver.name) || "Unknown"}
-                      amount={typeof txn.amount === "number" ? txn.amount : 0}
-                      time={txn.startTime instanceof Date ? txn.startTime : new Date()}
-                      isSent={true}
-                    />
-                  ))}
-
-                  {receivedTxns.map((txn) => (
-                    <TransactionCard
-                      key={typeof txn.id === "number" ? txn.id : 0}
-                      name={typeof txn.sender.name === "string" ? txn.sender.name : String(txn.sender.name) || "Unknown"}
-                      amount={typeof txn.amount === "number" ? txn.amount : 0}
-                      time={txn.startTime instanceof Date ? txn.startTime : new Date()}
-                      isSent={false}
-                    />
-                  ))}
+                    {receivedTxns.map((txn) => (
+                      <TransactionCard
+                        key={typeof txn.id === "number" ? txn.id : 0}
+                        name={typeof txn.sender.name === "string" ? txn.sender.name : String(txn.sender.name) || "Unknown"}
+                        amount={typeof txn.amount === "number" ? txn.amount/100 : 0}
+                        time={txn.startTime instanceof Date ? txn.startTime : new Date()}
+                        isSent={false}
+                      />
+                    ))}
+                    </div>
 
                 </div>
               </div>

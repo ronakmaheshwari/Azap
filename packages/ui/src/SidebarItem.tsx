@@ -8,7 +8,7 @@ export default function SidebarItem({href,title,icon}:{href:string,title:string,
     const selected = pathname === href
 
     return(
-        <div className={`flex ${selected ? "text-[#6a51a6]" : "text-slate-500"} cursor-pointer  p-2 pl-8`} onClick={()=>{
+        <div className={`flex ${selected ? "text-[#6a51a6] bg-zinc-100" : "text-slate-500"} cursor-pointer rounded-md p-2 pl-8`} onClick={()=>{
             router.push(href)        
         }}>
             <div className="pr-2">

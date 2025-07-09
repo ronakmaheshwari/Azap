@@ -11,7 +11,8 @@
     "./center":"./src/Center.tsx",
     "./maincard":"./src/MainCard.tsx",
     "./textinput":"./src/TextInput.tsx",
-    "./select":"./src/Select.tsx"
+    "./select":"./src/Select.tsx",
+    "./cryptobank":"./src/CryptoCard.tsx"
   },
   "scripts": {
     "lint": "eslint . --max-warnings 0",
