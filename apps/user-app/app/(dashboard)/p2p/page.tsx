@@ -1,6 +1,4 @@
 import { getServerSession } from "next-auth";
-import ReceivedOffRamp from "../../lib/action/ReceivedOffRamp";
-import SentOffRamp from "../../lib/action/SentOffRamp";
 import SendCard from "../../ui/SendCard";
 import { authOptions } from "../../lib/auth";
 import prisma from "@repo/db/client";

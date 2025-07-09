@@ -8,9 +8,18 @@ const providerWebhookMap: Record<ProviderType, string> = {
   HDFC: "http://localhost:3002/hdfc",
   YESBANK: "http://localhost:3002/yesbank",
   AXISBANK: "http://localhost:3002/axisbank",
-  ICIC: "http://localhost:3002/icici",
+  ICIC: "http://localhost:3002/icic",
   BOB: "http://localhost:3002/bob",
   UPI: "https://webhook.site/upi",
+};
+
+const providerImage: Record<ProviderType, string> = {
+  HDFC: "/hdfcbank.png",
+  YESBANK: "/yesbank.png",
+  AXISBANK: "/axisbank.png",
+  ICIC: "/icicbank.png",
+  BOB: "/bob.png",
+  UPI: "/upi.png",
 };
 
 export default function Bank() {
@@ -20,11 +29,15 @@ export default function Bank() {
   const [amount, setAmount] = useState("");
   const [token, setToken] = useState("");
   const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
+  
+  const providerKey = provider?.toUpperCase() as ProviderType;
+  const imageSrc = provider ? providerImage[providerKey] : "";
 
   useEffect(() => {
     const amt = searchParams.get("amount");
     const tkn = searchParams.get("token");
     const amount = ((Number(amt))/100).toString()
+    
     if (amt) setAmount(amount);
     if (tkn) setToken(tkn);
   }, [searchParams]);
@@ -34,7 +47,7 @@ export default function Bank() {
 
     const providerKey = provider.toUpperCase() as ProviderType;
     const webhookURL = providerWebhookMap[providerKey];
-
+    
     if (!webhookURL) {
       alert("Invalid provider");
       return;
@@ -67,8 +80,11 @@ export default function Bank() {
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-indigo-50 to-purple-100 px-4">
       <div className="w-full max-w-md p-6 bg-white rounded-xl shadow-lg space-y-6">
         <div className="text-center">
+          {imageSrc && (
+            <img src={imageSrc} alt={`${providerKey} logo`} className="h-12 mx-auto mb-2" />
+          )}
           <h2 className="text-xl font-bold text-gray-800">
-            {provider?.toUpperCase()} NetBanking
+            {providerKey} NetBanking
           </h2>
           <p className="text-sm text-gray-500">Confirm your transaction</p>
         </div>
