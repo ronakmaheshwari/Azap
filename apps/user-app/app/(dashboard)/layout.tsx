@@ -34,7 +34,7 @@ export default function Layout({
       <AppbarClient />
 
       <div className="flex w-full h-full p-1 overflow-hidden">
-          <div className="w-72 border-r border-slate-300 min-h-screen pt-28">
+          <div className="w-72 border-r border-slate-300 min-h-screen p-3 gap-1 flex flex-col justify-start ">
             <SidebarItem title="Home" icon={<HomeIcon />} href="/dashboard" />
             <SidebarItem title="Transfer" icon={<TransferIcon />} href="/transfer" />
             <SidebarItem title="Transaction" icon={<TransactionsIcon />} href="/transaction" />

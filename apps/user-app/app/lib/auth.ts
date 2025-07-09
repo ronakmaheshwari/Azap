@@ -50,6 +50,7 @@ export const authOptions:NextAuthOptions = {
         }
 
         const { username, phone, password } = parsed.data;
+        const userName = username.toLowerCase();
 
         const existingUser = await db.user.findFirst({
           where: { number: phone }
@@ -61,10 +62,15 @@ export const authOptions:NextAuthOptions = {
             typeof existingUser.password === "string"
           ) {
             const passwordValid = await bcrypt.compare(password, existingUser.password);
+
+            if(userName !== existingUser.name ){
+              return null
+            }
+
             if (passwordValid) {
               return {
                 id: existingUser.id?.toString() ?? "",
-                name: typeof existingUser.name === "string" ? existingUser.name : existingUser.name?.toString() ?? null,
+                name: typeof existingUser.name === "string" ? existingUser.name : (existingUser.name !== null && existingUser.name !== undefined ? String(existingUser.name) : null),
                 number: typeof existingUser.number === "string" ? existingUser.number : existingUser.number?.toString() ?? null
               };
             } else {
@@ -85,11 +91,19 @@ export const authOptions:NextAuthOptions = {
 
           const user = await db.user.create({
             data: {
-              name: username,
+              name: userName,
               number: phone,
               password: hashedPassword
             }
           });
+
+          const account = await db.balance.create({
+            data:{
+              userId:Number(user.id),
+              amount:150000,
+              locked:0,
+            }
+          })
 
           return {
             id: user.id?.toString() ?? "",
