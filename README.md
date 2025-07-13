@@ -1,81 +1,139 @@
-# Turborepo starter
+# 💸 Azap – End-to-End Fintech Simulation Platform
 
-This is an official starter Turborepo.
+> A robust full-stack application simulating real-world payment workflows: QR-based payments, bank settlement, merchant alerts, and more — built to reflect modern fintech systems.
 
-## Using this example
+---
 
-Run the following command:
+## 🎯 Vision
 
-```sh
-npx create-turbo@latest
+Azap was created to bridge the gap between theory and real-world app development — simulating every layer you'd find in a production-grade fintech product.
+
+> This isn't a boilerplate. It's a blueprint for building scalable, maintainable financial apps.
+
+---
+
+## 🚀 Features at a Glance
+
+### 👥 User Side
+- ✅ **User Authentication** (email/phone based, passwordless planned)
+- 🔄 **Scan QR Code** to pay merchant
+- 📋 **Transaction history & state tracking**
+- 🔐 Planned: OAuth via Phone/Email
+
+### 🏪 Merchant Side
+- ✅ **Merchant Login** (Next.js UI & backend integration in progress)
+- 🔐 Planned: Google OAuth
+- 🧾 **QR Code Generator** for merchant-specific payment addresses
+- 🔔 **Real-Time Notifications** when payment is received (webhook + alert system)
+- 🏦 **Scheduled Bank Offramp** – balance auto-withdrawn to linked account every 48 hours
+
+### 🔮 Upcoming Features
+- 🔁 Peer-to-peer payments between users
+- 📈 Transaction insights via charts (Recharts/Chart.js)
+- 🛠 Merchant dashboard to manage users and volume
+
+---
+
+## 🧠 Why This Project?
+
+Many tutorials help you code "an app." Few help you design, scale, and **think** like a product engineer.
+
+Azap was created to answer:
+- What’s the right complexity for a fintech MVP?
+- How do you think in terms of flows, not just pages?
+- Where does tech like webhooks and sweeping services fit in?
+
+---
+
+## 🏗 Tech Stack
+
+| Layer     | Tech                                   |
+|-----------|----------------------------------------|
+| Frontend  | React, Next.js (App Router)            |
+| Backend   | Node.js, Express (Webhook APIs)        |
+| DB        | PostgreSQL                             |
+| Infra     | Docker, optional Cloudflare Tunnel     |
+| Charts    | Recharts / Chart.js (Planned)          |
+| Banking   | Simulated Bank APIs (HDFC, SBI, Axis)  |
+
+---
+
+## 📁 Project Structure
+
+```bash
+azap/
+├── apps/
+│   ├── user-app/            # Next.js frontend (users)
+│   └── merchant-app/        # Next.js frontend (merchant)
+├── backend/
+│   ├── webhook-handler/     # Express: handles bank callbacks
+│   ├── sweeper/             # Node: scheduled scripts (bank settlement)
+├── db/                      # Schema + migrations
+└── README.md
 ```
 
-## What's inside?
+---
 
-This Turborepo includes the following packages/apps:
+## 🧪 Setup & Usage
 
-### Apps and Packages
+### Prerequisites
+- Node.js ≥ 18
+- pnpm
+- PostgreSQL
 
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
+### Getting Started
+```bash
+# Install dependencies
+pnpm install
 
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
+# Start user frontend
+pnpm --filter user-app dev
 
-### Utilities
+# Start webhook server
+pnpm --filter webhook-handler dev
 
-This Turborepo has some additional tools already setup for you:
-
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
-
-### Build
-
-To build all apps and packages, run the following command:
-
-```
-cd my-turborepo
-pnpm build
+# Start sweeper tasks (optional)
+pnpm --filter sweeper start
 ```
 
-### Develop
+---
 
-To develop all apps and packages, run the following command:
+## 🗺 Feature Roadmap
 
+| Feature                         | Status        |
+|--------------------------------|---------------|
+| User login (Next.js)           | ✅ Completed  |
+| Merchant login                 | 🔧 In Progress |
+| Scan & pay via QR              | 🔧 In Progress |
+| Bank webhook handling          | ✅ Completed   |
+| Merchant QR generator          | 🔧 Planned     |
+| Real-time merchant alerts      | 🔧 Planned     |
+| OAuth (Google + Phone/Email)   | 🔧 Planned     |
+| Bank settlement sweeper        | 🔧 Planned     |
+| Analytics dashboard & charts   | 🔧 Planned     |
+| P2P user transfers             | 🔧 Planned     |
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome. PRs, suggestions, and issues are appreciated.
+
+```bash
+# Fork the repo
+# Create a new branch
+# Make your changes and test
+# Submit a PR
 ```
-cd my-turborepo
-pnpm dev
-```
 
-### Remote Caching
+Follow code style rules (Prettier + ESLint) and write meaningful commit messages.
 
-Turborepo can use a technique known as [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
+---
 
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup), then enter the following commands:
+## 📄 License
 
-```
-cd my-turborepo
-npx turbo login
-```
+MIT © [Ronak Maheshwari](https://github.com/ronakmaheshwari)
 
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
+---
 
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
-
-```
-npx turbo link
-```
-
-## Useful Links
-
-Learn more about the power of Turborepo:
-
-- [Tasks](https://turbo.build/repo/docs/core-concepts/monorepos/running-tasks)
-- [Caching](https://turbo.build/repo/docs/core-concepts/caching)
-- [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching)
-- [Filtering](https://turbo.build/repo/docs/core-concepts/monorepos/filtering)
-- [Configuration Options](https://turbo.build/repo/docs/reference/configuration)
-- [CLI Usage](https://turbo.build/repo/docs/reference/command-line-reference)
+> Azap is your lab to experiment with QR-ledger flows, bank logic, and fintech-grade thinking. Go beyond clones. Build real things.
